@@ -7,3 +7,5 @@
 - Shell Scripting
 
 - Formação Frontend
+
+- Formação Python
