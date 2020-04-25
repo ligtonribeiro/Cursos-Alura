@@ -1,8 +1,8 @@
 #!/bin/bash
 
-CAMINHO_IMAGENS=../imagens-livros
+cd ../imagens-livros
 
-for imagem in $@
+for imagem in *.jpg
 do
-    convert $CAMINHO_IMAGENS/$imagem.jpg $CAMINHO_IMAGENS/$imagem.png
+    convert $imagem $imagem
 done
