@@ -54,7 +54,7 @@ def jogar():
         print("        '-------'       ")
     else:
         print("Puxa, você foi enforcado!")
-        print("A palavra era {}".format(palavra_secreta))
+        print(f"A palavra era {palavra_secreta}")
         print("    _______________         ")
         print("   /               \       ")
         print("  /                 \      ")
