@@ -61,12 +61,15 @@
     <script src="js/app/models/Negociacao.js"></script>
     <script>
 
-        var n1 = new Negociacao();
-        console.log(n1);
-        
-        var n2 = new Negociacao();
-        console.log(n2);
-
+        var n1 = new Negociacao(new Date(), 5, 700);
+        data = n1.getData();
+        quantidade = n1.getQuantidade();
+        valor = n1.getValor();
+        volume = n1.getVolume();
+        console.log(data);
+        console.log(quantidade);
+        console.log(valor);
+        console.log(volume);
 
     </script>
 </body>
