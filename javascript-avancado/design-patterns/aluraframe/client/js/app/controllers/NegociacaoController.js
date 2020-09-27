@@ -1,5 +1,5 @@
 class NegociacaoController {
-    
+
   constructor() {
         let $ = document.querySelector.bind(document);  
         this._inputData = $('#data');
@@ -7,7 +7,7 @@ class NegociacaoController {
         this._inputValor = $('#valor');
         this._listaNegociacoes = new ListaNegociacoes();  
   }
-    
+  
   adiciona(event) {
      event = event.preventDefault();
 
