@@ -6,7 +6,7 @@ module.exports = app => {
     app.post('/atendimentos', (req, res) => {
         const atendimento = req.body
 
-        Atendimento.Adicionar(atendimento)
-        res.send('Cadastro realizado com sucesso!')
+        Atendimento.Adicionar(atendimento, res)
+
     });
 }
