@@ -1,4 +1,5 @@
 const moment = require('moment');
+const { restart } = require('nodemon');
 const conexao = require('../infraestrutura/conexao');
 class Atendimento {
     Adicionar(atendimento, res) {
@@ -34,12 +35,61 @@ class Atendimento {
                 if (error) {
                     res.status(400).json(error)
                 } else {
-                    res.status(201).json(results)
+                    res.status(201).json(atendimento)
                 }
             });
         }
 
-    };
+    }
+
+    listar(res) {
+        const sql = 'SELECT * FROM atendimentos'
+        conexao.query(sql, (error, results) => {
+            if (error) {
+                res.status(400).json(error);
+            } else {
+                res.status(200).json(results);
+            }
+        })
+    }
+
+    buscaPorId(id, res) {
+        const sql = `SELECT * FROM atendimentos WHERE id=${id}`
+        conexao.query(sql, (error, results) => {
+            const atendimento = results[0];
+            if (error) {
+                res.status(400).json(error);
+            } else {
+                res.status(200).json(atendimento);
+            }
+        })
+    }
+
+    alterar(id, valores, res) {
+        if (valores.data) {
+            valores.data = moment(valores.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS');
+        }
+        
+        const sql = 'UPDATE atendimentos SET ? WHERE id=?'
+        conexao.query(sql, [valores, id], (error, results) => {
+            if (error) {
+                res.status(400).json(error);
+            } else {
+                res.status(200).json({id, ...valores})
+            }
+        })
+    }
+
+    deletar(id, res) {
+        const sql = 'DELETE FROM atendimentos WHERE id=?'
+        conexao.query(sql, id, (error, results) => {
+            if (error) {
+                res.status(400).json(error);
+            } else {
+                res.status(200).json({id})
+            }
+        })
+    }
 };
 
 module.exports = new Atendimento;
