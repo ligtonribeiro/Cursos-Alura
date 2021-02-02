@@ -17,8 +17,8 @@ class Pets {
                     } else {
                         res.status(201).json(novoPet);
                     }
-                })
-            }
+                });
+            };
         });
     };
 };
