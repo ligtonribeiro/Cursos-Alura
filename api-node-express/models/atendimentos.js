@@ -1,5 +1,4 @@
 const moment = require('moment');
-const { restart } = require('nodemon');
 const conexao = require('../infraestrutura/conexao');
 class Atendimento {
     Adicionar(atendimento, res) {
