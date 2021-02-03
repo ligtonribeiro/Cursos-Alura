@@ -1,7 +1,9 @@
 const moment = require('moment');
-const conexao = require('../infraestrutura/conexao');
+const axios = require('axios');
+const conexao = require('../infraestrutura/database/conexao');
+const repositorio = require('../repositorios/atendimento')
 class Atendimento {
-    Adicionar(atendimento, res) {
+    Adicionar(atendimento) {
         const dataCriacao = moment().format('YYYY-MM-DD HH:MM:SS');
         const data = moment(atendimento.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS');
 
@@ -25,20 +27,18 @@ class Atendimento {
         const existemErros = erros.length;
 
         if (existemErros) {
-            res.status(400).json(erros)
+            return new Promise((resolve, reject) => {
+                reject(error)
+                res.status(400).json(error)
+            })
         } else {
             const atendimentoDatado = {...atendimento, dataCriacao, data};
-            const sql = 'INSERT INTO atendimentos SET ?'
-    
-            conexao.query(sql, atendimentoDatado, (error, results) => {
-                if (error) {
-                    res.status(400).json(error)
-                } else {
-                    res.status(201).json(atendimento)
-                }
-            });
+            return repositorio.adiciona(atendimentoDatado)
+                .then(results => {
+                    const id = results.insertId
+                    return {...atendimento, id}
+                })
         }
-
     }
 
     listar(res) {
@@ -54,11 +54,14 @@ class Atendimento {
 
     buscaPorId(id, res) {
         const sql = `SELECT * FROM atendimentos WHERE id=${id}`
-        conexao.query(sql, (error, results) => {
+        conexao.query(sql, async (error, results) => {
             const atendimento = results[0];
+            const cpf = atendimento.cliente;
             if (error) {
                 res.status(400).json(error);
             } else {
+                const { data } = await axios.get(`http://localhost:8082/${cpf}`);
+                atendimento.cliente = data;
                 res.status(200).json(atendimento);
             }
         })
