@@ -3,27 +3,42 @@ const axios = require('axios');
 const conexao = require('../infraestrutura/database/conexao');
 const repositorio = require('../repositorios/atendimento')
 class Atendimento {
-    Adicionar(atendimento) {
-        const dataCriacao = moment().format('YYYY-MM-DD HH:MM:SS');
-        const data = moment(atendimento.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS');
+    constructor() {
+        
+        this.validaData = ({data, dataCriacao}) => moment(data).isSameOrAfter(dataCriacao);
+        this.validaNome = tamanho => tamanho >= 5;
+        this.valida = parametros => this.validacoes.filter(campo => {
+            const { nome } = campo
+            const parametro = parametros[nome]
+            
+            return !campo.valida(parametro)
+        })
 
-        const validaData = moment(data).isSameOrAfter(dataCriacao);
-        const validaNome = atendimento.cliente.length >= 5;
-
-        const validacoes = [
+        this.validacoes = [
             {
                 nome: 'data',
-                valido: validaData,
+                valido: this.validaData,
                 mensagem: 'Data deve ser maior ou igua a data atual'
             },
             {
                 nome: 'nome',
-                valido: validaNome,
+                valido: this.validaNome,
                 mensagem: 'Nome deve ter pelo menos cinco caracteres'
             }
         ];
+    }
 
-        const erros = validacoes.filter(campo => !campo.valido);
+
+    Adicionar(atendimento) {
+        const dataCriacao = moment().format('YYYY-MM-DD HH:MM:SS');
+        const data = moment(atendimento.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS');
+
+        const parametros = {
+            data: {data, dataCriacao},
+            cliente: { tamanho: atendimento.cliente.length }
+        }
+        
+        const erros = this.valida(parametros)
         const existemErros = erros.length;
 
         if (existemErros) {
@@ -42,14 +57,9 @@ class Atendimento {
     }
 
     listar(res) {
-        const sql = 'SELECT * FROM atendimentos'
-        conexao.query(sql, (error, results) => {
-            if (error) {
-                res.status(400).json(error);
-            } else {
-                res.status(200).json(results);
-            }
-        })
+        return repositorio.lista()
+            .then(results => res.json(results))
+            .catch(error => res.status(400).json(error))
     }
 
     buscaPorId(id, res) {
