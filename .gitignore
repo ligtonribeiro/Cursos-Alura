@@ -6,3 +6,5 @@ Trilha-Python/Python3-OOP/venv/
 api-node-express/database/
 api-node-express/node_modules/
 api-node-express/servicos/node_modules/
+api-petshop/node_modules/
+api-petshop/mysqldb/
