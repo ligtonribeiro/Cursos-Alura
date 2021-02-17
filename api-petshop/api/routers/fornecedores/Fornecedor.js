@@ -26,7 +26,7 @@ class Fornecedor {
 
     async carregar() {
         const encontrado = await TableFornecedor.pegarPorId(this.id)
-        
+
         this.empresa = encontrado.empresa
         this.email = encontrado.email
         this.categora = encontrado.categoria
