@@ -25,4 +25,4 @@ const opt = {
     version: 'versao'
 }
 
-odule.exports = db.define('Fornecedor', columns, opt);m
+module.exports = db.define('Fornecedor', columns, opt);
