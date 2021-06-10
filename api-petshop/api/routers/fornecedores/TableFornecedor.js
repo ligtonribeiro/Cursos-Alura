@@ -3,7 +3,7 @@ const NaoEncontrado = require('../../erros/NaoEncontrado')
 
 module.exports = {
     listar() {
-        return Model.findAll();
+        return Model.findAll({ raw: true });
     },
 
     inserir(fornecedor) {

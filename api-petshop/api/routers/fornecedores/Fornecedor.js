@@ -31,7 +31,7 @@ class Fornecedor {
 
         this.empresa = encontrado.empresa
         this.email = encontrado.email
-        this.categora = encontrado.categoria
+        this.categoria = encontrado.categoria
         this.dataCriacao = encontrado.dataCriacao
         this.dataAtualizacao = encontrado.dataAtualizacao
         this.versao = encontrado.versao
